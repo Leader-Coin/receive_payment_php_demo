@@ -1,7 +1,7 @@
 # Notes
 Simple PHP example of using the blockchain.info receive payments API to process payments in PHP.
 
-https://ldcblockchain.info/api/api_receive
+http://ldcblockchain.info/api/api_receive
 
 Show an invoice the the User with a javascript payment button, on payment received redirects to a status page. When the payment is fully confirmed shows the user nutsandbolts.jpg i.e. the product.
 
