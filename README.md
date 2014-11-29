@@ -15,3 +15,5 @@ Do not use in production as is.
 	* http://loclahost/receive_payment_php_demo/setup.php
 	* Now the database is intilizaized open the demo
 	* http://localhost/receive_payment_php_demo/index.php
+
+http://ldcblockchain.info/exemple/
