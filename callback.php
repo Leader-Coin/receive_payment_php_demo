@@ -2,9 +2,9 @@
 
 include 'include.php';
 
-mysql_connect($mysql_host, $mysql_username, $mysql_password) or die(__LINE__ . ' Invalid connect: ' . mysql_error());
+$dbconnect = new PDO("mysql:host=" . $mysql_host .  ";dbname=" . $mysql_database, $mysql_username, $mysql_password);
 
-mysql_select_db($mysql_database) or die( "Unable to select database. Run setup first.");
+/*mysql_select_db($mysql_database) or die( "Unable to select database. Run setup first.");*/
 
 $invoice_id = $_GET['invoice_id'];
 $transaction_hash = $_GET['transaction_hash'];
@@ -26,12 +26,12 @@ if ($_GET['secret'] != $secret) {
   return;
 }
 
-if ($_GET['confirmations'] >= 4) {
+if ($_GET['confirmations'] >= 1) {
   //Add the invoice to the database
-  $result = mysql_query("replace INTO invoice_payments (invoice_id, transaction_hash, value) values($invoice_id, '$transaction_hash', $value_in_btc)");
+  $result = $dbconnect->query("replace INTO invoice_payments (invoice_id, transaction_hash, value) values($invoice_id, '$transaction_hash', $value_in_btc)");
 
   //Delete from pending
-  mysql_query("delete from pending_invoice_payments where invoice_id = $invoice_id limit 1");
+  $dbconnect->query("delete from pending_invoice_payments where invoice_id = $invoice_id limit 1");
 
   if($result) {
 	   echo "*ok*";
@@ -39,7 +39,7 @@ if ($_GET['confirmations'] >= 4) {
 } else {
    //Waiting for confirmations
    //create a pending payment entry
-   mysql_query("replace INTO pending_invoice_payments (invoice_id, transaction_hash, value) values($invoice_id, '$transaction_hash', $value_in_btc)");
+   $dbconnect->query("replace INTO pending_invoice_payments (invoice_id, transaction_hash, value) values($invoice_id, '$transaction_hash', $value_in_btc)");
 
    echo "Waiting for confirmations";
 }
